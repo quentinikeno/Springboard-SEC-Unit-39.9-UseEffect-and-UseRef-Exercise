@@ -27,7 +27,7 @@ const CardDeck = () => {
 				const res = await axios.get(
 					`${baseUrl}new/shuffle/?deck_count=1`
 				);
-				setDeckId(() => res.data.deckId);
+				setDeckId(() => res.data.deck_id);
 			} catch (error) {
 				console.log(error);
 			}
