@@ -40,7 +40,9 @@ const CardDeck = () => {
 	return (
 		<div>
 			<h1>Deck of Cards</h1>
-			<button onClick={handleClick}>Gimme a Card!</button>
+			{cards.length < 52 && (
+				<button onClick={handleClick}>Gimme a Card!</button>
+			)}
 			{cardComponents}
 		</div>
 	);
