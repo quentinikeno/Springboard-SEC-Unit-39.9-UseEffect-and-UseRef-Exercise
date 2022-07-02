@@ -13,7 +13,8 @@ const CardDeck = () => {
 				const res = await axios.get(
 					`${baseUrl}${deckId}/draw/?count=1`
 				);
-				setCards((cards) => [...cards, res.data.cards[0].image]);
+				const { code, image } = res.data.cards[0];
+				setCards((cards) => [...cards, { code, image }]);
 			} catch (error) {
 				console.log(error);
 			}
@@ -35,7 +36,9 @@ const CardDeck = () => {
 		shuffleDeck();
 	}, []);
 
-	const cardComponents = cards.map((image) => <Card src={image} />);
+	const cardComponents = cards.map((card) => (
+		<Card key={card.code} src={card.image} />
+	));
 
 	return (
 		<div>
