@@ -1,9 +1,10 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Card from "./Card";
 import axios from "axios";
 
 const CardDeck = () => {
 	const baseUrl = "https://deckofcardsapi.com/api/deck/";
+	const timerId = useRef();
 	const [deckId, setDeckId] = useState(null);
 	const [cardsRemaining, setCardsRemaining] = useState(null);
 	const [cards, setCards] = useState([]);
@@ -22,7 +23,14 @@ const CardDeck = () => {
 				console.log(error);
 			}
 		};
-		getNewCard();
+
+		timerId.current = setInterval(() => {
+			getNewCard();
+		}, 1000);
+
+		return () => {
+			clearInterval(timerId.current);
+		};
 	};
 
 	useEffect(() => {
