@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import Card from "./Card";
 import axios from "axios";
+import "./CardDeck.css";
 
 const CardDeck = () => {
 	const baseUrl = "https://deckofcardsapi.com/api/deck/";
@@ -40,7 +41,11 @@ const CardDeck = () => {
 					clearInterval(timerId.current);
 				}
 
-				setCards((cards) => [...cards, { code, image }]);
+				const angleAndCoords = setAngleAndCoords();
+				setCards((cards) => [
+					...cards,
+					{ code, image, ...angleAndCoords },
+				]);
 				setCardsRemaining(() => remaining);
 			} catch (error) {
 				console.log(error);
@@ -61,10 +66,21 @@ const CardDeck = () => {
 		};
 	}, [isDrawing, setIsDrawing, deckId]);
 
+	const setAngleAndCoords = () => ({
+		angle: Math.random() * 90 - 45,
+		xPos: Math.random() * 40 - 20,
+		yPos: Math.random() * 40 - 20,
+	});
 	const handleClick = () => setIsDrawing((isDrawing) => !isDrawing);
 
 	const cardComponents = cards.map((card) => (
-		<Card key={card.code} src={card.image} />
+		<Card
+			key={card.code}
+			src={card.image}
+			angle={card.angle}
+			xPos={card.xPos}
+			yPos={card.yPos}
+		/>
 	));
 
 	return (
@@ -79,7 +95,7 @@ const CardDeck = () => {
 					</button>
 				)}
 			</div>
-			<div>{cardComponents}</div>
+			<div className="CardDeck-card-pile">{cardComponents}</div>
 		</div>
 	);
 };

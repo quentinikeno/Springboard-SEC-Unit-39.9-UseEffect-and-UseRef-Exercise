@@ -1,0 +1,22 @@
+.CardDeck h1 {
+	color: white;
+}
+
+.CardDeck button {
+	font-size: 1.5rem;
+	color: white;
+	background-color: slateblue;
+	padding: 0.5rem;
+	border: none;
+	border-radius: 0.125rem;
+	cursor: pointer;
+}
+
+.CardDeck p {
+	font-size: 1.5rem;
+	color: white;
+}
+
+.CardDeck-card-pile {
+	margin: 6rem auto;
+}
