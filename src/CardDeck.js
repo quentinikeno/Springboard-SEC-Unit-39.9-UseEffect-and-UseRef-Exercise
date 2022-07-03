@@ -5,6 +5,7 @@ import axios from "axios";
 const CardDeck = () => {
 	const baseUrl = "https://deckofcardsapi.com/api/deck/";
 	const [deckId, setDeckId] = useState(null);
+	const [cardsRemaining, setCardsRemaining] = useState(null);
 	const [cards, setCards] = useState([]);
 
 	const handleClick = () => {
@@ -13,8 +14,10 @@ const CardDeck = () => {
 				const res = await axios.get(
 					`${baseUrl}${deckId}/draw/?count=1`
 				);
+				console.log(res.data);
 				const { code, image } = res.data.cards[0];
 				setCards((cards) => [...cards, { code, image }]);
+				setCardsRemaining(() => res.data.remaining);
 			} catch (error) {
 				console.log(error);
 			}
@@ -28,7 +31,9 @@ const CardDeck = () => {
 				const res = await axios.get(
 					`${baseUrl}new/shuffle/?deck_count=1`
 				);
-				setDeckId(() => res.data.deck_id);
+				const { deck_id, remaining } = res.data;
+				setDeckId(() => deck_id);
+				setCardsRemaining(() => remaining);
 			} catch (error) {
 				console.log(error);
 			}
@@ -43,10 +48,14 @@ const CardDeck = () => {
 	return (
 		<div>
 			<h1>Deck of Cards</h1>
-			{cards.length < 52 && (
-				<button onClick={handleClick}>Gimme a Card!</button>
-			)}
-			{cardComponents}
+			<div>
+				{cardsRemaining === 0 ? (
+					<p>No cards remaining!</p>
+				) : (
+					<button onClick={handleClick}>Gimme a Card!</button>
+				)}
+			</div>
+			<div>{cardComponents}</div>
 		</div>
 	);
 };
